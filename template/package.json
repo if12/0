@@ -1,0 +1,27 @@
+{
+  "name": "@skylar/<%=name%>",
+  "version": "0.0.1",
+  "babel": {
+    "presets": [
+      [
+        "es2015",
+        {
+          "modules": false
+        }
+      ],
+      "react"
+    ],
+    "plugins": ["transform-class-properties"]
+  },
+  "dependencies": {
+    "classnames": "^2.2.5"
+  },
+  "scripts": {
+    "start": "bee start",
+    "build": "bee build",
+    "dll": "webpack --config webpack.dll.config.js --progress --profile --color",
+    "build": "npm run dll && webpack --color --profile --progress",
+    "server": "yarn dev & webpack-dev-server --port 8181",
+    "dev": "webpack --color --progress --watch"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "bee",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": "./bin/bee.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "monkindey",
+  "license": "MIT",
+  "dependencies": {
+    "cross-spawn": "^5.1.0",
+    "ejs": "^2.5.7",
+    "fs-extra": "^4.0.0",
+    "majo": "^0.4.1"
+  }
+}
