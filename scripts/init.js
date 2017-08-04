@@ -11,6 +11,8 @@ const { checkNpmInstalled, checkYarnInstalled, fallback } = require('../utils');
 
 const name = process.argv[2];
 
+const { filename } = require('../config');
+
 const TEMPLATE_PATH = path.resolve(__dirname, '../template');
 const PATH = path.resolve(process.cwd(), name);
 
@@ -33,7 +35,8 @@ function copy() {
         ctx.fileList.map(file => {
           const content = ctx.fileContents(file);
           const res = ejs.render(content, {
-            name
+            name,
+            filename
           });
 
           ctx.writeContents(file, res);
