@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
-class HelloReact extends Component {
+export default class <%=name%> extends Component {
   render() {
-    return <div>Hello React</div>;
+    return <div>Hello <%=name%></div>;
   }
 }
-
-ReactDOM.render(<HelloReact />, document.getElementById('app'));
