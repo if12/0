@@ -1,8 +1,8 @@
 const path = require('path');
-const { src, dist } = require('./paths');
+const { src, dist, example, localNodeModule } = require('./paths');
 const { filename } = require('.');
 
-const entry = path.resolve(src, 'index.js');
+const entry = path.resolve(example, 'index.js');
 // We add the compile env on the top of the project
 // https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
 const resolveGlobalPath = relativePath => require.resolve('babel-loader');
@@ -11,6 +11,12 @@ const resolveGlobalPath = relativePath => require.resolve('babel-loader');
 // set the presets: ['react'] and throw the strange error, more information in
 // https://github.com/babel/babel/issues/5006
 const globalPresets = [require.resolve('babel-preset-react')];
+const globalPlugins = [
+  'transform-object-rest-spread',
+  'transform-class-properties'
+].map(plugin => {
+  return require.resolve(`babel-plugin-${plugin}`);
+});
 
 // Do not let babel-core to use your local configuration
 module.exports = {
@@ -20,23 +26,20 @@ module.exports = {
     path: dist,
     filename
   },
+  resolve: {
+    modules: [localNodeModule, 'node_modules']
+  },
   module: {
     rules: [
       {
         test: /.js$/,
         exclude: /node_modules/,
-        // exclude: function(file) {
-        //   if (/node_modules/.test(file)) {
-        //     return true;
-        //   } else {
-        //     return false;
-        //   }
-        // },
         use: {
           loader: resolveGlobalPath('babel-loader'),
           options: {
             babelrc: false,
-            presets: globalPresets
+            presets: globalPresets,
+            plugins: globalPlugins
           }
         }
       }

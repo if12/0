@@ -12,12 +12,17 @@
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
     "ejs": "^2.5.7",
+    "find-what": "^0.1.0",
     "fs-extra": "^4.0.0",
     "majo": "^0.4.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1"
   }

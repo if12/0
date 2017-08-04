@@ -93,6 +93,7 @@ function install(deps) {
   );
 }
 
-fse.ensureDir(PATH).then(copy).then(chdir).then(() => {
-  return install(['react', 'react-dom']);
-});
+fse.ensureDir(PATH).then(copy).then(chdir)
+// .then(() => {
+//   return install(['react', 'react-dom']);
+// });
