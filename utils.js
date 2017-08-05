@@ -1,3 +1,4 @@
+const path = require('path');
 const spawn = require('cross-spawn');
 
 function checkCmd(cmd, args) {
@@ -7,6 +8,10 @@ function checkCmd(cmd, args) {
     return worked ? resolve(true) : reject(false);
   });
 }
+
+// exports.getFilename = filePath => path.parse(filePath).name;
+exports.getFilename = filePath =>
+  path.basename(filePath, path.extname(filePath));
 
 /**
  * @param []

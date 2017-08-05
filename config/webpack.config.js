@@ -1,8 +1,22 @@
 const path = require('path');
+const fs = require('fs');
 const { src, dist, example, localNodeModule } = require('./paths');
-const { filename } = require('.');
+const { getFilename } = require('../utils');
+const { filename } = require('./index');
 
-const entry = path.resolve(example, 'index.js');
+const entry = fs
+  .readdirSync(example)
+  // Get rid of file type but js file
+  .filter(file => /(.js|.jsx)$/.test(path.extname(file)))
+  .reduce((entries, file) => {
+    return Object.assign(
+      {},
+      {
+        [getFilename(file)]: path.resolve(example, file)
+      }
+    );
+  }, {});
+
 // We add the compile env on the top of the project
 // https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
 const resolveGlobalPath = relativePath => require.resolve('babel-loader');
