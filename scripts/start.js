@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
 const config = require('../config/webpack.config.js');
-const { port, filename } = require('../config');
+const { port, filename, host } = require('../config/');
 const paths = require('../config/paths');
 
 const compiler = webpack(config);
@@ -15,7 +15,7 @@ const devServer = new WebpackDevServer(compiler, {
     // Customize your View Engine
     app.set('view engine', 'html');
     app.engine('html', require('ejs').renderFile);
-    app.set('views', path.resolve(__dirname, '../views/'));
+    app.set('views', path.resolve(__dirname, '../fixture/'));
 
     // Add the index router
     app.get('/', (req, res) => {
@@ -32,12 +32,14 @@ const devServer = new WebpackDevServer(compiler, {
       });
     });
   },
-  contentBase: paths.example,
+  // Enable gzip compression of generated files and will save 80% volume
+  compress: true,
+  contentBase: [paths.example, path.resolve(__dirname, '../fixture')],
   stats: {
     colors: true
   }
 });
 
-devServer.listen(port, '127.0.0.1', () => {
+devServer.listen(port, host, () => {
   console.log(chalk.green(`The Webpack Dev Server at ${port}`));
 });
