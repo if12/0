@@ -1,5 +1,8 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack');
+
+const { vendorPath, manifestName } = require('./');
 const { src, dist, example, localNodeModule } = require('./paths');
 const { getFilename } = require('../utils');
 const { filename } = require('./index');
@@ -9,12 +12,9 @@ const entry = fs
   // Get rid of file type but js file
   .filter(file => /(.js|.jsx)$/.test(path.extname(file)))
   .reduce((entries, file) => {
-    return Object.assign(
-      {},
-      {
-        [getFilename(file)]: path.resolve(example, file)
-      }
-    );
+    return Object.assign(entries, {
+      [getFilename(file)]: path.resolve(example, file)
+    });
   }, {});
 
 // We add the compile env on the top of the project
@@ -58,5 +58,11 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require(path.resolve(vendorPath, manifestName))
+    })
+  ]
 };
