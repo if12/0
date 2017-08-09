@@ -43,6 +43,9 @@ module.exports = {
   resolve: {
     modules: [localNodeModule, 'node_modules']
   },
+  // devtool: 'cheap-module-eval-source-map',
+  // I think this will be better in development
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
