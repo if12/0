@@ -32,7 +32,6 @@ const globalPlugins = [
   return require.resolve(`babel-plugin-${plugin}`);
 });
 
-// Do not let babel-core to use your local configuration
 module.exports = {
   entry,
   output: {
@@ -41,6 +40,7 @@ module.exports = {
     filename
   },
   resolve: {
+    extensions: ['.js', '.jsx'],
     modules: [localNodeModule, 'node_modules']
   },
   // devtool: 'cheap-module-eval-source-map',
@@ -49,11 +49,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.js$/,
+        test: /(.js|.jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: resolveGlobalPath('babel-loader'),
           options: {
+            // Do not let babel-core to use your local configuration
             babelrc: false,
             presets: globalPresets,
             plugins: globalPlugins
@@ -67,5 +68,8 @@ module.exports = {
       context: __dirname,
       manifest: require(path.resolve(vendorPath, manifestName))
     })
-  ]
+  ],
+  performance: {
+    hints: false
+  }
 };
