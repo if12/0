@@ -12,7 +12,7 @@ const files = fs
   // Get rid of file type but js
   .filter(file => /(.js|.jsx)$/.test(path.extname(file)));
 
-let entry = makeEntry(files);
+const entry = makeEntry(files);
 
 function makeEntry(files) {
   return files.reduce((entries, file) => {
@@ -91,13 +91,15 @@ const webpackConfig = {
 };
 
 module.exports = config => {
+  // Such as `yarn start table`, and the
+  // entry will be ['table'].  `yarn start`
+  // entry will be [] and run every js of
+  // example folder
   if (config.entry.length !== 0) {
-    entry = makeEntry(config.entry);
+    config.entry = makeEntry(config.entry);
+  } else {
+    delete config.entry;
   }
 
-  delete config.entry;
-
-  return Object.assign(webpackConfig, config, {
-    entry
-  });
+  return Object.assign(webpackConfig, config);
 };
