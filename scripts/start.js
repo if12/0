@@ -16,8 +16,14 @@ const {
   manifestName
 } = require('../config/');
 
+const entry = process.argv.slice(2);
+
+process.on('unhandledRejection', err => {
+  throw err;
+});
+
 function createDevServer() {
-  const compiler = webpack(require('../config/webpack.config.js'));
+  const compiler = webpack(require('../config/webpack.config.js')({ entry }));
   const devServer = new WebpackDevServer(compiler, {
     setup(app) {
       // Customize your View Engine

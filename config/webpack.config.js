@@ -7,19 +7,24 @@ const { src, dist, example, localNodeModule } = require('./paths');
 const { getFilename } = require('../utils');
 const { filename } = require('./index');
 
-const entry = fs
+const files = fs
   .readdirSync(example)
-  // Get rid of file type but js file
-  .filter(file => /(.js|.jsx)$/.test(path.extname(file)))
-  .reduce((entries, file) => {
+  // Get rid of file type but js
+  .filter(file => /(.js|.jsx)$/.test(path.extname(file)));
+
+let entry = makeEntry(files);
+
+function makeEntry(files) {
+  return files.reduce((entries, file) => {
     return Object.assign(entries, {
       [getFilename(file)]: path.resolve(example, file)
     });
   }, {});
+}
 
 // We add the compile env on the top of the project
 // https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
-const resolveGlobalPath = relativePath => require.resolve('babel-loader');
+const resolveGlobalPath = relativePath => require.resolve(relativePath);
 
 // Use the global preset because of babel will look up react locally when
 // set the presets: ['react'] and throw the strange error, more information in
@@ -32,7 +37,7 @@ const globalPlugins = [
   return require.resolve(`babel-plugin-${plugin}`);
 });
 
-module.exports = {
+const webpackConfig = {
   entry,
   output: {
     pathinfo: true,
@@ -60,6 +65,17 @@ module.exports = {
             plugins: globalPlugins
           }
         }
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader'].map(
+          resolveGlobalPath
+        ),
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'].map(resolveGlobalPath)
       }
     ]
   },
@@ -72,4 +88,16 @@ module.exports = {
   performance: {
     hints: false
   }
+};
+
+module.exports = config => {
+  if (config.entry.length !== 0) {
+    entry = makeEntry(config.entry);
+  }
+
+  delete config.entry;
+
+  return Object.assign(webpackConfig, config, {
+    entry
+  });
 };

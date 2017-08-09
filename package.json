@@ -18,12 +18,16 @@
     "babel-preset-react": "^6.24.1",
     "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
+    "css-loader": "^0.28.4",
     "ejs": "^2.5.7",
     "find-what": "^0.1.0",
     "fs-extra": "^4.0.0",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
     "majo": "^0.4.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "style-loader": "^0.18.2",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1"
   }
