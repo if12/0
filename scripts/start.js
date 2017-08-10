@@ -8,6 +8,8 @@ const fse = require('fs-extra');
 
 const dllConfig = require('../config/webpack.dll.config.js');
 const paths = require('../config/paths');
+const WatchAddPlugin = require('../utils/WatchAddPlugin');
+
 const {
   port,
   filename,
@@ -23,7 +25,14 @@ process.on('unhandledRejection', err => {
 });
 
 function createDevServer() {
-  const compiler = webpack(require('../config/webpack.config.js')({ entry }));
+  const config = require('../config/webpack.config.js')({ entry });
+  config.plugins.push(
+    new WatchAddPlugin({
+      path: paths.example
+    })
+  );
+
+  const compiler = webpack(config);
   const devServer = new WebpackDevServer(compiler, {
     setup(app) {
       // Customize your View Engine

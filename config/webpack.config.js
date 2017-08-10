@@ -10,7 +10,7 @@ const { filename } = require('./index');
 const files = fs
   .readdirSync(example)
   // Get rid of file type but js
-  .filter(file => /(.js|.jsx)$/.test(path.extname(file)));
+  .filter(file => /(.js|.js)$/.test(path.extname(file)));
 
 const entry = makeEntry(files);
 
