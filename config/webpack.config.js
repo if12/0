@@ -40,15 +40,16 @@ const globalPlugins = [
 const webpackConfig = {
   entry,
   output: {
+    // Only in development
     pathinfo: true,
     path: dist,
     filename
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    modules: [localNodeModule, 'node_modules']
+    // Your repo node_modules will have higher priority
+    modules: ['node_modules', localNodeModule]
   },
-  // devtool: 'cheap-module-eval-source-map',
   // I think this will be better in development
   devtool: 'eval-source-map',
   module: {
