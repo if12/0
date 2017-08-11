@@ -16,6 +16,8 @@ class WatchAddPlugin {
     chokidar.watch(this.path, {}).on('all', (event, path) => {
       if (event === 'add') {
         const name = getFilename(path);
+        // Beacuase initial phase `chokidar` will tigger 
+        // `add` event and filter original file but additional file
         if (
           this.assets.length === 0 ||
           this.assets.some(asset => asset === name)
@@ -27,6 +29,7 @@ class WatchAddPlugin {
         this.name = name;
         this.entry = path;
 
+        // This is critical
         compiler.watcher._go();
         // compiler.run((err, stats) => {
         //   console.log('running');
@@ -35,13 +38,11 @@ class WatchAddPlugin {
     });
 
     compiler.plugin('watch-run', (watcher, callback) => {
-      console.log('watch-run');
       compiler.watcher = watcher;
       callback();
     });
 
     compiler.plugin('make', (compilation, callback) => {
-      console.log('make');
       if (this.entry !== '') {
         const dep = SingleEntryPlugin.createDependency(this.entry, this.name);
         compilation.addEntry(this.context, dep, this.name, callback);
@@ -51,8 +52,6 @@ class WatchAddPlugin {
     });
 
     compiler.plugin('emit', (compilation, callback) => {
-      console.log('emit');
-
       this.assets = Object.keys(compilation.assets).map(getFilename);
       if (this.entry !== '') {
         compilation.fileDependencies.push(this.entry);

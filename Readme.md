@@ -1,8 +1,13 @@
 ## Bee
 
-Inspired by [create-react-app](https://github.com/facebookincubator/create-react-app)
+### Feature
+
+* Global
+* Dynamic Watch
+* Zero Configuration
 
 ### Thanks
 
-* https://github.com/egoist/sao
-* https://github.com/react-component/rc-tools 
+* [sao](https://github.com/egoist/sao)
+* [rc-tools](https://github.com/react-component/rc-tools)
+* [create-react-app](https://github.com/facebookincubator/create-react-app)
