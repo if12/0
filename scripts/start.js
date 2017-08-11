@@ -26,11 +26,6 @@ process.on('unhandledRejection', err => {
 
 function createDevServer() {
   const config = require('../config/webpack.config.js')({ entry });
-  config.plugins.push(
-    new WatchAddPlugin({
-      path: paths.example
-    })
-  );
 
   const compiler = webpack(config);
   const devServer = new WebpackDevServer(compiler, {

@@ -7,6 +7,7 @@ const { src, dist, example, localNodeModule } = require('./paths');
 const { getFilename } = require('../utils');
 const eslintFormatter = require('../utils/eslintFormatter');
 const { filename } = require('./index');
+const WatchAddPlugin = require('../utils/WatchAddPlugin');
 
 const files = fs
   .readdirSync(example)
@@ -104,6 +105,9 @@ const webpackConfig = {
     new webpack.DllReferencePlugin({
       context: __dirname,
       manifest: require(path.resolve(vendorPath, manifestName))
+    }),
+    new WatchAddPlugin({
+      path: example
     })
   ],
   performance: {
