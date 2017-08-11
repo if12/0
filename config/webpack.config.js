@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const { vendorPath, manifestName } = require('./');
 const { src, dist, example, localNodeModule } = require('./paths');
 const { getFilename } = require('../utils');
+const eslintFormatter = require('../utils/eslintFormatter');
 const { filename } = require('./index');
 
 const files = fs
@@ -54,6 +55,25 @@ const webpackConfig = {
   devtool: 'eval-source-map',
   module: {
     rules: [
+      // Refer to create-react-app
+      {
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: resolveGlobalPath('eslint-loader'),
+            options: {
+              // formatter: eslintFormatter,
+              eslintPath: resolveGlobalPath('eslint'),
+              baseConfig: {
+                extends: [resolveGlobalPath('eslint-config-react-app')]
+              }
+            }
+          }
+        ],
+        include: [src, example]
+      },
+
       {
         test: /(.js|.jsx)$/,
         exclude: /node_modules/,
