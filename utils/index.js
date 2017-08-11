@@ -9,6 +9,10 @@ function checkCmd(cmd, args) {
   });
 }
 
+// We add the compile env on the top of the project
+// https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
+exports.resolveGlobalPath = relativePath => require.resolve(relativePath);
+
 // exports.getFilename = filePath => path.parse(filePath).name;
 exports.getFilename = filePath =>
   path.basename(filePath, path.extname(filePath));

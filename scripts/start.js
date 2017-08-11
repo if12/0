@@ -24,8 +24,8 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
-function createDevServer() {
-  const config = require('../config/webpack.config.js')({ entry });
+async function createDevServer() {
+  const config = await require('../config/webpack.config.js')({ entry });
 
   const compiler = webpack(config);
   const devServer = new WebpackDevServer(compiler, {

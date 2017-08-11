@@ -1,12 +1,19 @@
+// Native
 const path = require('path');
 const fs = require('fs');
-const webpack = require('webpack');
 
+const webpack = require('webpack');
+const ware = require('ware');
+
+// Configuration
 const { vendorPath, manifestName } = require('./');
 const { src, dist, example, localNodeModule } = require('./paths');
-const { getFilename } = require('../utils');
-const eslintFormatter = require('../utils/eslintFormatter');
 const { filename } = require('./index');
+const lintMiddleware = require('./middleware-lint');
+
+// Utils
+const { getFilename, resolveGlobalPath } = require('../utils/');
+const eslintFormatter = require('../utils/eslintFormatter');
 const WatchAddPlugin = require('../utils/WatchAddPlugin');
 
 const files = fs
@@ -23,10 +30,6 @@ function makeEntry(files) {
     });
   }, {});
 }
-
-// We add the compile env on the top of the project
-// https://stackoverflow.com/questions/10111163/in-node-js-how-can-i-get-the-path-of-a-module-i-have-loaded-via-require-that-is
-const resolveGlobalPath = relativePath => require.resolve(relativePath);
 
 // Use the global preset because of babel will look up react locally when
 // set the presets: ['react'] and throw the strange error, more information in
@@ -56,25 +59,6 @@ const webpackConfig = {
   devtool: 'eval-source-map',
   module: {
     rules: [
-      // Refer to create-react-app
-      {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            loader: resolveGlobalPath('eslint-loader'),
-            options: {
-              // formatter: eslintFormatter,
-              eslintPath: resolveGlobalPath('eslint'),
-              baseConfig: {
-                extends: [resolveGlobalPath('eslint-config-react-app')]
-              }
-            }
-          }
-        ],
-        include: [src, example]
-      },
-
       {
         test: /(.js|.jsx)$/,
         exclude: /node_modules/,
@@ -115,6 +99,8 @@ const webpackConfig = {
   }
 };
 
+const middlewares = ware().use(lintMiddleware);
+
 module.exports = config => {
   // Such as `yarn start table`, and the
   // entry will be ['table'].  `yarn start`
@@ -126,5 +112,13 @@ module.exports = config => {
     delete config.entry;
   }
 
-  return Object.assign(webpackConfig, config);
+  // return Object.assign(webpackConfig, config);
+  return new Promise((resolve, reject) => {
+    middlewares.run(Object.assign(webpackConfig, config), (err, config) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(config);
+    });
+  });
 };
