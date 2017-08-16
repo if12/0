@@ -76,8 +76,7 @@ const webpackConfig = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'].map(
           resolveGlobalPath
-        ),
-        exclude: /node_modules/
+        )
       },
       {
         test: /\.css$/,
