@@ -7,7 +7,8 @@ const args = process.argv.slice(3);
 
 switch (script) {
   case 'init':
-  case 'start': {
+  case 'start':
+  case 'test': {
     spawn.sync('node', [require.resolve(`../scripts/${script}`)].concat(args), {
       stdio: 'inherit'
     });
