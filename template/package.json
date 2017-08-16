@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "bee start",
+    "test": "bee test",
     "dll": "webpack --config webpack.dll.config.js --progress --profile --color",
     "build": "npm run dll && webpack --color --profile --progress",
     "server": "yarn dev & webpack-dev-server --port 8181",
