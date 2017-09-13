@@ -36,6 +36,7 @@ function makeEntry(files) {
 // https://github.com/babel/babel/issues/5006
 const globalPresets = [require.resolve('babel-preset-react')];
 const globalPlugins = [
+  'syntax-dynamic-import',
   'transform-object-rest-spread',
   'transform-class-properties'
 ].map(plugin => {
