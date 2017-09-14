@@ -82,6 +82,14 @@ const webpackConfig = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'].map(resolveGlobalPath)
+      },
+      {
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        loader: resolveGlobalPath('url-loader'),
+        options: {
+          limit: 10000,
+          name: 'media/[name].[hash:8].[ext]'
+        }
       }
     ]
   },
